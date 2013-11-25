@@ -82,69 +82,23 @@ cp -a %{SOURCE1} %{buildroot}%{_datadir}/udisks.manifest
 %files
 %defattr(-,root,root,-)
 %manifest %{_datadir}/udisks.manifest
-%{_libdir}/systemd/system/udisks2.service
-%{_libdir}/systemd/system/multi-user.target.wants/udisks2.service
-%{_libdir}/udev/rules.d/80-udisks2.rules
-%{_prefix}/bin/udisksctl
-%{_prefix}/etc/dbus-1/system.d/org.freedesktop.UDisks2.conf
-%{_prefix}/include/udisks2/udisks/udisks-generated.h
-%{_prefix}/lib/libudisks2.so
-%{_prefix}/lib/libudisks2.so.0
-%{_prefix}/lib/libudisks2.so.0.0.0
-%{_prefix}/lib/udisks2/udisksd
-%{_prefix}/sbin/umount.udisks2
-%{_prefix}/share/bash-completion/completions/udisksctl
-%{_prefix}/share/dbus-1/system-services/org.freedesktop.UDisks2.service
-%{_prefix}/share/polkit-1/actions/org.freedesktop.udisks2.policy
-
+%{_prefix}/lib/
+%{_libdir}/systemd/
+%{_libdir}/udev/
+%{_prefix}/bin/
+%{_prefix}/etc/
+%{_prefix}/sbin/
+%{_prefix}/share/
+%exclude %{_prefix}/share/locale/
+%exclude %{_prefix}/lib/pkgconfig/udisks2.pc
+%exclude %{_prefix}/lib/debug
+%license COPYING
 
 %files devel
-%{_prefix}/include/udisks2/udisks/udisks-generated.h
-%{_prefix}/include/udisks2/udisks/udisks.h
-%{_prefix}/include/udisks2/udisks/udisksclient.h
-%{_prefix}/include/udisks2/udisks/udisksenums.h
-%{_prefix}/include/udisks2/udisks/udisksenumtypes.h
-%{_prefix}/include/udisks2/udisks/udiskserror.h
-%{_prefix}/include/udisks2/udisks/udisksobjectinfo.h
-%{_prefix}/include/udisks2/udisks/udiskstypes.h
-%{_prefix}/include/udisks2/udisks/udisksversion.h
+%{_prefix}/include/
 %{_prefix}/lib/libudisks2.so
 %{_prefix}/lib/pkgconfig/udisks2.pc
 
 %files locale
-%{_prefix}/share/locale/bg/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/cs/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/de/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/el/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/en_GB/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/es/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/eu/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fa/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fi/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/gl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/hr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/hu/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ia/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/id/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/it/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ja/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ka/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/kk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/lv/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/nl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pa/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pt_BR/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ru/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sq/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sv/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/tr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/uk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_CN/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_HK/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_TW/LC_MESSAGES/udisks2.mo
+%{_prefix}/share/locale/
 
