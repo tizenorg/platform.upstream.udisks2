@@ -1,6 +1,6 @@
 Name:     udisks
 Summary:  The udisks
-Version:  1.6
+Version:  2.1.2
 Release:  1
 License:  GPL-2.0
 Group:    Base/Device Management
@@ -8,9 +8,8 @@ URL:      http://code.google.com/p/cryptsetup/
 Source0:  %{name}-%{version}.tar.gz
 Source1:  udisks.manifest
 
-BuildRequires: pkgconfig(polkit-gobject-1)
-BuildRequires: pkgconfig(polkit-backend-1)
-BuildRequires: pkgconfig(polkit-agent-1)
+BuildRequires: pkgconfig(polkit-gobject-1) >= 0.112
+BuildRequires: pkgconfig(polkit-agent-1) >= 0.112
 BuildRequires: pkgconfig(libatasmart)
 BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(libxslt)
