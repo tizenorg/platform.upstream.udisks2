@@ -96,7 +96,10 @@ cp -a %{SOURCE1} %{buildroot}%{_datadir}/udisks.manifest
 %{_prefix}/share/bash-completion/completions/udisksctl
 %{_prefix}/share/dbus-1/system-services/org.freedesktop.UDisks2.service
 %{_prefix}/share/polkit-1/actions/org.freedesktop.udisks2.policy
-
+%ifarch %{ix86}
+%{_prefix}/lib/girepository-1.0/UDisks-2.0.typelib
+%{_prefix}/share/gir-1.0/UDisks-2.0.gir
+%endif
 
 %files devel
 %{_prefix}/include/udisks2/udisks/udisks-generated.h
@@ -112,39 +115,38 @@ cp -a %{SOURCE1} %{buildroot}%{_datadir}/udisks.manifest
 %{_prefix}/lib/pkgconfig/udisks2.pc
 
 %files locale
-%{_prefix}/share/locale/bg/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/cs/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/de/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/el/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/en_GB/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/es/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/eu/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fa/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fi/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/fr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/gl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/hr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/hu/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ia/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/id/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/it/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ja/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ka/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/kk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/lv/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/nl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pa/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/pt_BR/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/ru/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sl/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sq/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/sv/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/tr/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/uk/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_CN/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_HK/LC_MESSAGES/udisks2.mo
-%{_prefix}/share/locale/zh_TW/LC_MESSAGES/udisks2.mo
-
+%lang(bg) %{_datadir}/locale/bg/LC_MESSAGES/udisks2.mo
+%lang(cs) %{_datadir}/locale/cs/LC_MESSAGES/udisks2.mo
+%lang(de) %{_datadir}/locale/de/LC_MESSAGES/udisks2.mo
+%lang(el) %{_datadir}/locale/el/LC_MESSAGES/udisks2.mo
+%lang(en_GB) %{_datadir}/locale/en_GB/LC_MESSAGES/udisks2.mo
+%lang(es) %{_datadir}/locale/es/LC_MESSAGES/udisks2.mo
+%lang(eu) %{_datadir}/locale/eu/LC_MESSAGES/udisks2.mo
+%lang(fa) %{_datadir}/locale/fa/LC_MESSAGES/udisks2.mo
+%lang(fi) %{_datadir}/locale/fi/LC_MESSAGES/udisks2.mo
+%lang(fr) %{_datadir}/locale/fr/LC_MESSAGES/udisks2.mo
+%lang(gl) %{_datadir}/locale/gl/LC_MESSAGES/udisks2.mo
+%lang(hr) %{_datadir}/locale/hr/LC_MESSAGES/udisks2.mo
+%lang(hu) %{_datadir}/locale/hu/LC_MESSAGES/udisks2.mo
+%lang(ia) %{_datadir}/locale/ia/LC_MESSAGES/udisks2.mo
+%lang(id) %{_datadir}/locale/id/LC_MESSAGES/udisks2.mo
+%lang(it) %{_datadir}/locale/it/LC_MESSAGES/udisks2.mo
+%lang(ja) %{_datadir}/locale/ja/LC_MESSAGES/udisks2.mo
+%lang(ka) %{_datadir}/locale/ka/LC_MESSAGES/udisks2.mo
+%lang(kk) %{_datadir}/locale/kk/LC_MESSAGES/udisks2.mo
+%lang(lv) %{_datadir}/locale/lv/LC_MESSAGES/udisks2.mo
+%lang(nl) %{_datadir}/locale/nl/LC_MESSAGES/udisks2.mo
+%lang(pa) %{_datadir}/locale/pa/LC_MESSAGES/udisks2.mo
+%lang(pl) %{_datadir}/locale/pl/LC_MESSAGES/udisks2.mo
+%lang(pt_BR) %{_datadir}/locale/pt_BR/LC_MESSAGES/udisks2.mo
+%lang(ru) %{_datadir}/locale/ru/LC_MESSAGES/udisks2.mo
+%lang(sk) %{_datadir}/locale/sk/LC_MESSAGES/udisks2.mo
+%lang(sl) %{_datadir}/locale/sl/LC_MESSAGES/udisks2.mo
+%lang(sq) %{_datadir}/locale/sq/LC_MESSAGES/udisks2.mo
+%lang(sr) %{_datadir}/locale/sr/LC_MESSAGES/udisks2.mo
+%lang(sv) %{_datadir}/locale/sv/LC_MESSAGES/udisks2.mo
+%lang(tr) %{_datadir}/locale/tr/LC_MESSAGES/udisks2.mo
+%lang(uk) %{_datadir}/locale/uk/LC_MESSAGES/udisks2.mo
+%lang(zh_CN) %{_datadir}/locale/zh_CN/LC_MESSAGES/udisks2.mo
+%lang(zh_HK) %{_datadir}/locale/zh_HK/LC_MESSAGES/udisks2.mo
+%lang(zh_TW) %{_datadir}/locale/zh_TW/LC_MESSAGES/udisks2.mo
