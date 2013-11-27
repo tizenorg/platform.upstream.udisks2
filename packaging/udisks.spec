@@ -1,10 +1,10 @@
 Name:     udisks
-Summary:  The udisks
+Summary:  Device management service, ver 2
 Version:  2.1.2
 Release:  1
-License:  GPL-2.0
+License:  GPL-2.0+
 Group:    Base/Device Management
-URL:      http://code.google.com/p/cryptsetup/
+URL:      http://www.freedesktop.org/wiki/Software/udisks
 Source0:  %{name}-%{version}.tar.gz
 Source1:  udisks.manifest
 
@@ -15,8 +15,8 @@ BuildRequires: pkgconfig(glib-2.0)
 BuildRequires: pkgconfig(libxslt)
 BuildRequires: pkgconfig(python)
 BuildRequires: pkgconfig(expat)
+BuildRequires: pkgconfig(gobject-introspection-1.0) >= 0.6.2
 
-BuildRequires: gobject-introspection
 BuildRequires: device-mapper-devel
 BuildRequires: perl-XML-Parser
 BuildRequires: libgudev-devel
@@ -33,18 +33,58 @@ Requires:      libxslt
 Requires:      polkit
 Requires:      expat
 
+
 %description
-The udisks project provides:
-    - daemon, udisksd, that implements well-defined D-Bus interfaces that can be used to query and 
-      manipulate storage devices
-    - command-line tool, udisksctl, that can be used to query and use the daemon The actions that 
-      a user can perform using udisks are restricted using polkit
+udisks provides a daemon, udisksd, that implements well-defined D-Bus interfaces
+that can be used to query and manipulate storage devices and a command-line
+tool, udisksctl, that can be used to query and use the daemon. The actions that
+a user can perform using udisks are restricted using polkit.
+
+
+%package -n libudisks2-0
+Summary:        UDisks Client Library, version 2
+License:        LGPL-2.0+
+Group:          System/Libraries
+Recommends:     %{name} = %{version}
+
+
+%description -n libudisks2-0
+udisks provides a daemon, udisksd, that implements well-defined D-Bus interfaces
+that can be used to query and manipulate storage devices and a command-line
+tool, udisksctl, that can be used to query and use the daemon. The actions that
+a user can perform using udisks are restricted using polkit.
+
+
+%package -n typelib-UDisks-2_0
+License:    LGPL-2.0+
+Summary:    udisks Introspection bindings
+Group:      System/Libraries
+Requires:   %{name} = %{version}-%{release}
+
+
+%description -n typelib-UDisks-2_0
+udisks provides a daemon, udisksd, that implements well-defined D-Bus interfaces
+that can be used to query and manipulate storage devices and a command-line
+tool, udisksctl, that can be used to query and use the daemon. The actions that
+a user can perform using udisks are restricted using polkit.    
+This package provides the GObject Introspection bindings for UDisks client
+library.
+  
 
 %package devel
-License:    LGPL-2.1
-Summary:    The udisks development package
+License:    LGPL-2.0+
+Summary:    udisks development package
 Group:      Development/Libraries
-Requires:   %{name} = %{version}-%{release}
+Requires:   libudisks2-0 = %{version}-%{release}
+
+
+%description devel
+udisks provides a daemon, udisksd, that implements well-defined D-Bus interfaces
+that can be used to query and manipulate storage devices and a command-line
+tool, udisksctl, that can be used to query and use the daemon. The actions that
+a user can perform using udisks are restricted using polkit.
+This package provides development files for udisks.
+
 
 %package locale
 License:    GPL-2.0
@@ -52,67 +92,75 @@ Summary:    The udisks locale package
 Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 
-%description devel
-udisk development package
 
 %description locale
-udisk development package
+udisks locale package
+
 
 %prep
 %setup -q
 
+
 %build
-./autogen.sh --disable-gtk-doc --disable-gtk-doc-html --disable-gtk-doc-pdf --disable-man --disable-nls --prefix=/usr
+%autogen \
+  --disable-gtk-doc \
+  --disable-gtk-doc-html \
+  --disable-gtk-doc-pdf \
+  --disable-man \
+  --disable-nls
 
 make %{?jobs:-j%jobs}
+
 
 %install
 rm -rf %{buildroot}
 %make_install
-mkdir -p %{buildroot}/usr/lib/systemd/system/multi-user.target.wants
-ln -s ../udisks2.service %{buildroot}/usr/lib/systemd/system/multi-user.target.wants/udisks2.service
+%install_service multi-user.target.wants udisks2.service
 cp -a %{SOURCE1} %{buildroot}%{_datadir}/udisks.manifest
+
 
 %clean
 
-%post -p /sbin/ldconfig
 
-%postun -p /sbin/ldconfig
+%post -n libudisks2-0 -p /sbin/ldconfig
+
+
+%postun -n libudisks2-0 -p /sbin/ldconfig
+
 
 %files
 %defattr(-,root,root,-)
 %manifest %{_datadir}/udisks.manifest
-%{_libdir}/systemd/system/udisks2.service
-%{_libdir}/systemd/system/multi-user.target.wants/udisks2.service
-%{_libdir}/udev/rules.d/80-udisks2.rules
-%{_prefix}/bin/udisksctl
-%{_prefix}/etc/dbus-1/system.d/org.freedesktop.UDisks2.conf
-%{_prefix}/include/udisks2/udisks/udisks-generated.h
-%{_prefix}/lib/libudisks2.so
-%{_prefix}/lib/libudisks2.so.0
-%{_prefix}/lib/libudisks2.so.0.0.0
-%{_prefix}/lib/udisks2/udisksd
-%{_prefix}/sbin/umount.udisks2
-%{_prefix}/share/bash-completion/completions/udisksctl
-%{_prefix}/share/dbus-1/system-services/org.freedesktop.UDisks2.service
-%{_prefix}/share/polkit-1/actions/org.freedesktop.udisks2.policy
-%ifarch %{ix86}
-%{_prefix}/lib/girepository-1.0/UDisks-2.0.typelib
-%{_prefix}/share/gir-1.0/UDisks-2.0.gir
-%endif
+%{_unitdir}/udisks2.service
+%{_unitdir}/multi-user.target.wants/udisks2.service
+%{_udevrulesdir}/80-udisks2.rules
+%{_bindir}/udisksctl
+%{_sysconfdir}/dbus-1/system.d/org.freedesktop.UDisks2.conf
+%dir %{_libdir}/udisks2
+%{_libdir}/udisks2/udisksd
+%{_sbindir}/umount.udisks2
+%{_datadir}/bash-completion/completions/udisksctl
+%{_datadir}/dbus-1/system-services/org.freedesktop.UDisks2.service
+%{_datadir}/polkit-1/actions/org.freedesktop.udisks2.policy
+
+
+%files -n libudisks2-0
+%defattr(-,root,root,-)
+%{_libdir}/libudisks2.so.*
+
+
+%files -n typelib-UDisks-2_0
+%defattr(-,root,root,-)
+%{_libdir}/girepository-1.0/UDisks-2.0.typelib
+
 
 %files devel
-%{_prefix}/include/udisks2/udisks/udisks-generated.h
-%{_prefix}/include/udisks2/udisks/udisks.h
-%{_prefix}/include/udisks2/udisks/udisksclient.h
-%{_prefix}/include/udisks2/udisks/udisksenums.h
-%{_prefix}/include/udisks2/udisks/udisksenumtypes.h
-%{_prefix}/include/udisks2/udisks/udiskserror.h
-%{_prefix}/include/udisks2/udisks/udisksobjectinfo.h
-%{_prefix}/include/udisks2/udisks/udiskstypes.h
-%{_prefix}/include/udisks2/udisks/udisksversion.h
-%{_prefix}/lib/libudisks2.so
-%{_prefix}/lib/pkgconfig/udisks2.pc
+%defattr(-,root,root,-)
+%{_includedir}/udisks2/
+%{_libdir}/libudisks2.so
+%{_libdir}/pkgconfig/udisks2.pc
+%{_datadir}/gir-1.0/UDisks-2.0.gir
+
 
 %files locale
 %lang(bg) %{_datadir}/locale/bg/LC_MESSAGES/udisks2.mo
