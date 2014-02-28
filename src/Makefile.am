@@ -106,7 +106,7 @@ libudisks_daemon_la_LIBADD =				\
 
 # ----------------------------------------------------------------------------------------------------
 
-udisksdprivdir = $(prefix)/lib/udisks2
+udisksdprivdir = $(libdir)/udisks2
 udisksdpriv_PROGRAMS = udisksd
 
 udisksd_SOURCES = 					\
@@ -127,5 +127,5 @@ udisksd_LDADD = 					\
 
 install-data-local:
 	-$(mkdir_p) $(DESTDIR)$(sysconfdir)/udisks2
-	-$(mkdir_p) $(DESTDIR)$(localstatedir)/lib/udisks2
-	-chmod 0700 $(DESTDIR)$(localstatedir)/lib/udisks2
+	-$(mkdir_p) $(DESTDIR)$(libdir)/udisks2
+	-chmod 0700 $(DESTDIR)$(libdir)/udisks2
