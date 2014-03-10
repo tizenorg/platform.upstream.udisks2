@@ -1,0 +1,2 @@
+* Mon Mar 10 2014 Patrick McCarty <patrick.mccarty@linux.intel.com> edfb5ca
+- Fix build for arch x86_64.
