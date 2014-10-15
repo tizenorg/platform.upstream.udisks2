@@ -27,6 +27,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdio_ext.h>
 #include <mntent.h>
 #include <sys/types.h>
 #include <sys/acl.h>
@@ -187,6 +188,38 @@ static const gchar *well_known_filesystems[] =
   NULL,
 };
 
+
+static gboolean
+has_smackfs(void)
+{
+  gboolean exists = FALSE;
+  FILE *fp = NULL;
+  char *buf = NULL;
+  size_t len;
+  ssize_t num;
+
+  fp = fopen("/proc/filesystems", "r");
+  if (!fp)
+      return 1;
+
+  __fsetlocking(fp, FSETLOCKING_BYCALLER);
+
+  num = getline(&buf, &len, fp);
+  while (num != -1)
+    {
+      if (strstr(buf, "smackfs"))
+        {
+          exists = TRUE;
+          break;
+        }
+      num = getline(&buf, &len, fp);
+    }
+
+  free(buf);
+  fclose(fp);
+  return exists;
+}
+
 static gboolean
 is_in_filesystem_file (const gchar *filesystems_file,
                        const gchar *fstype)
@@ -273,10 +306,13 @@ typedef struct
   const gchar * const *allow_gid_self;
 } FSMountOptions;
 
+/* ---------------------- smackfs -------------------- */
+static const gchar *smack_defaults[] = { "smackfsroot=*", "smackfsdef=*", NULL };
+
 /* ---------------------- vfat -------------------- */
 
 static const gchar *vfat_defaults[] = { "uid=", "gid=", "shortname=mixed", "dmask=0077", "utf8=1", "showexec", "flush", NULL };
-static const gchar *vfat_allow[] = { "flush", "utf8=", "shortname=", "umask=", "dmask=", "fmask=", "codepage=", "iocharset=", "usefree", "showexec", NULL };
+static const gchar *vfat_allow[] = { "flush", "utf8=", "shortname=", "umask=", "dmask=", "fmask=", "codepage=", "iocharset=", "usefree", "showexec", "smackfsroot=", "smackfsdef=", NULL };
 static const gchar *vfat_allow_uid_self[] = { "uid=", NULL };
 static const gchar *vfat_allow_gid_self[] = { "gid=", NULL };
 
@@ -284,21 +320,21 @@ static const gchar *vfat_allow_gid_self[] = { "gid=", NULL };
 /* this is assuming that ntfs-3g is used */
 
 static const gchar *ntfs_defaults[] = { "uid=", "gid=", "dmask=0077", "fmask=0177", NULL };
-static const gchar *ntfs_allow[] = { "umask=", "dmask=", "fmask=", "locale=", "norecover", "ignore_case", "windows_names", "compression", "nocompression", NULL };
+static const gchar *ntfs_allow[] = { "umask=", "dmask=", "fmask=", "locale=", "norecover", "ignore_case", "windows_names", "compression", "nocompression", "smackfsroot=", "smackfsdef=", NULL };
 static const gchar *ntfs_allow_uid_self[] = { "uid=", NULL };
 static const gchar *ntfs_allow_gid_self[] = { "gid=", NULL };
 
 /* ---------------------- iso9660 -------------------- */
 
 static const gchar *iso9660_defaults[] = { "uid=", "gid=", "iocharset=utf8", "mode=0400", "dmode=0500", NULL };
-static const gchar *iso9660_allow[] = { "norock", "nojoliet", "iocharset=", "mode=", "dmode=", NULL };
+static const gchar *iso9660_allow[] = { "norock", "nojoliet", "iocharset=", "mode=", "dmode=", "smackfsroot=", "smackfsdef=", NULL };
 static const gchar *iso9660_allow_uid_self[] = { "uid=", NULL };
 static const gchar *iso9660_allow_gid_self[] = { "gid=", NULL };
 
 /* ---------------------- udf -------------------- */
 
 static const gchar *udf_defaults[] = { "uid=", "gid=", "iocharset=utf8", "umask=0077", NULL };
-static const gchar *udf_allow[] = { "iocharset=", "umask=", NULL };
+static const gchar *udf_allow[] = { "iocharset=", "umask=", "smackfsroot=", "smackfsdef=", NULL };
 static const gchar *udf_allow_uid_self[] = { "uid=", NULL };
 static const gchar *udf_allow_gid_self[] = { "gid=", NULL };
 
@@ -744,6 +780,18 @@ calculate_mount_options (UDisksDaemon              *daemon,
       g_string_append_c (str, ',');
       g_string_append (str, option);
     }
+
+  /* add smackfs options if supported */
+  if (has_smackfs())
+    {
+      for (n = 0; smack_defaults[n] != NULL; n++)
+        {
+            const gchar *option = smack_defaults[n];
+            g_string_append_c (str, ',');
+            g_string_append (str, option);
+        }
+    }
+
   options_to_use_str = g_string_free (str, FALSE);
 
  out:
