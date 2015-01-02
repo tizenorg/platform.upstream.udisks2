@@ -1,9 +1,9 @@
 Name:     udisks
 Summary:  Device management service, ver 2
 Version:  2.1.2
-Release:  1
+Release:  0
 License:  GPL-2.0+
-Group:    Base/Device Management
+Group:    System / Utilities
 URL:      http://www.freedesktop.org/wiki/Software/udisks
 Source0:  %{name}-%{version}.tar.gz
 Source1:  udisks.manifest
@@ -44,7 +44,7 @@ a user can perform using udisks are restricted using polkit.
 %package -n libudisks2-0
 Summary:        UDisks Client Library, version 2
 License:        LGPL-2.0+
-Group:          System/Libraries
+Group:          System / Utilities
 Recommends:     %{name} = %{version}
 
 
@@ -58,7 +58,7 @@ a user can perform using udisks are restricted using polkit.
 %package -n typelib-UDisks-2_0
 License:    LGPL-2.0+
 Summary:    udisks Introspection bindings
-Group:      System/Libraries
+Group:      System / Utilities
 Requires:   %{name} = %{version}-%{release}
 
 
@@ -74,7 +74,7 @@ library.
 %package devel
 License:    LGPL-2.0+
 Summary:    udisks development package
-Group:      Development/Libraries
+Group:      System / Utilities
 Requires:   libudisks2-0 = %{version}-%{release}
 
 
@@ -89,7 +89,7 @@ This package provides development files for udisks.
 %package locale
 License:    GPL-2.0
 Summary:    The udisks locale package
-Group:      Development/Libraries
+Group:      System / Utilities
 Requires:   %{name} = %{version}-%{release}
 
 
